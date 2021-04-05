@@ -85,13 +85,14 @@ bool Remove_Node(string NodeName){
 // Compare the current utilization of CPU and Memory with the Thresholds
 void Cluster_Autoscaler() {
 	for(itr=NodePool.begin();itr!=NodePool.end();itr++){
+
 		int curr_cpu_utilization = (((itr->second).first) * 100) / 160;
 		int curr_mem_utilization = (((itr->second).second) * 100) / 1638;
+
 		cout<<itr->first<<" ";
 		cout<<"Current CPU utilization: "<<curr_cpu_utilization<<"%\n";
 		cout<<itr->first<<" ";
 		cout<<"Current Memory utilization: "<<curr_mem_utilization<<"%\n\n";
-		
 		
 		// Scale DOWN -> If both CPU and Memory current Utilization is less than 50%
 		// If using srand() (at line 49) then change the min threshold to 80 (below is 50) for testing purpose
