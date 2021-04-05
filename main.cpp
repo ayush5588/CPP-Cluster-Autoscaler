@@ -28,21 +28,22 @@ class WorkerNode {
 		pair<int,int> get(){
 			return {cpu,mem};
 		}
+
+		// Initialize Node Pool
+		// node pool size = 5
+		void Init_NodePool() {
+			while(i < 6){
+				WorkerNode node;
+				pair<int,int> p = node.get();
+				p.first *=0.80;
+				p.second *= 0.80;
+				string nodeName = "Node_" + to_string(i);
+				NodePool[nodeName] = p;
+				++i;
+			}
+		}
 };
 
-// Initialize Node Pool with each node created from the WorkerNode class
-void Init_NodePool() {
-	 // node pool size = 5
-	 while(i < 6){
-	 	WorkerNode node;
-	 	pair<int,int> p = node.get();
-	 	p.first *=0.80;
-	 	p.second *= 0.80;
-	 	string nodeName = "Node_" + to_string(i);
-	 	NodePool[nodeName] = p;
-	 	++i;
-	 }
-}
 
 // Generating random traffic on the nodes in the NodePool by assigning nodes random values in the given range
 void Metrics_Collector(){
@@ -139,7 +140,8 @@ void display() {
 }
 
 int main() {
-	Init_NodePool();
+	WorkerNode obj;
+	obj.Init_NodePool();
 	Prometheus();
 	display();
 	NodePool.clear();
