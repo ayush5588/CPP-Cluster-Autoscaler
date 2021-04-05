@@ -78,6 +78,46 @@ bool Remove_Node(string NodeName){
 	return false;
 }
 
+void Cluster_Autoscaler() {
+	for(itr=NodePool.begin();itr!=NodePool.end();itr++){
+		int curr_cpu_utilization = (((itr->second).first) * 100) / 160;
+		int curr_mem_utilization = (((itr->second).second) * 100) / 1638;
+		cout<<itr->first<<" ";
+		cout<<"Current CPU utilization: "<<curr_cpu_utilization<<"%\n";
+		cout<<itr->first<<" ";
+		cout<<"Current Memory utilization: "<<curr_mem_utilization<<"%\n\n";
+		
+		
+		// Scale DOWN
+		if(curr_cpu_utilization < 50 && curr_mem_utilization < 50){
+			
+			cout<<"Scaling Down NodePool"<<"\n";
+			if(Remove_Node(itr->first)){
+				cout<<"Scale Down SUCCESS! "<<"\n";
+				cout<<NodePool.size()<<"\n\n";
+				--itr;
+				
+			}else{
+				cout<<"Scale Down FAILED! "<<"\n";
+			}
+		}
+		
+		// Scale UP
+		else if(curr_cpu_utilization > 80 || curr_mem_utilization > 80){
+			// scale up
+			cout<<"Scaling Up NodePool"<<"\n";
+			if(Insert_NewNode()){
+				cout<<"Scale Up SUCCESS! "<<"\n";
+				cout<<NodePool.size()<<"\n\n";
+			}else{
+				cout<<"Scale Up FAILED! "<<"\n";
+			}
+		}
+
+		cout<<"NodePool Size: "<<NodePool.size()<<"\n\n";
+	}
+}
+
 
 int main() {
     Init_NodePool();
