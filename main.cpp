@@ -4,6 +4,7 @@
 #include<string>
 #include<algorithm>
 #include<stdlib.h>
+#include<ctime>
 
 using namespace std;
 
@@ -45,6 +46,8 @@ void Init_NodePool() {
 
 // Generating random traffic on the nodes in the NodePool by assigning nodes random values in the given range
 void Metrics_Collector(){
+	// srand((unsigned int)time(0));
+	// Refer https://stackoverflow.com/questions/9459035/why-does-rand-yield-the-same-sequence-of-numbers-on-every-run 
 	for(itr=NodePool.begin();itr!=NodePool.end();itr++){
 		// generate random CPU usage in range [20,160]
 		// generate random Memory usage in range [80,1638]
@@ -90,6 +93,7 @@ void Cluster_Autoscaler() {
 		
 		
 		// Scale DOWN -> If both CPU and Memory current Utilization is less than 50%
+		// If using srand() (at line 49) then change the min threshold to 80 (below is 50) for testing purpose
 		if(curr_cpu_utilization < 50 && curr_mem_utilization < 50){
 			cout<<"Scaling Down NodePool"<<"\n";
 			if(Remove_Node(itr->first)){
