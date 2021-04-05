@@ -8,7 +8,6 @@
 using namespace std;
 
 // Global Variables
-//unordered_map<string,pair<int,int>> NodePool;
 map<string,pair<int,int>> NodePool;
 map<string,pair<int,int>>::iterator itr;
 int i = 1;
@@ -78,6 +77,8 @@ bool Remove_Node(string NodeName){
 	return false;
 }
 
+// Go over the NodePool. 
+// Compare the current utilization of CPU and Memory with the Thresholds
 void Cluster_Autoscaler() {
 	for(itr=NodePool.begin();itr!=NodePool.end();itr++){
 		int curr_cpu_utilization = (((itr->second).first) * 100) / 160;
@@ -88,27 +89,22 @@ void Cluster_Autoscaler() {
 		cout<<"Current Memory utilization: "<<curr_mem_utilization<<"%\n\n";
 		
 		
-		// Scale DOWN
+		// Scale DOWN -> If both CPU and Memory current Utilization is less than 50%
 		if(curr_cpu_utilization < 50 && curr_mem_utilization < 50){
-			
 			cout<<"Scaling Down NodePool"<<"\n";
 			if(Remove_Node(itr->first)){
 				cout<<"Scale Down SUCCESS! "<<"\n";
-				cout<<NodePool.size()<<"\n\n";
 				--itr;
-				
 			}else{
 				cout<<"Scale Down FAILED! "<<"\n";
 			}
 		}
 		
-		// Scale UP
+		// Scale UP -> If anyone of the CPU and Memory current Utilization is greater than 80%
 		else if(curr_cpu_utilization > 80 || curr_mem_utilization > 80){
-			// scale up
 			cout<<"Scaling Up NodePool"<<"\n";
 			if(Insert_NewNode()){
 				cout<<"Scale Up SUCCESS! "<<"\n";
-				cout<<NodePool.size()<<"\n\n";
 			}else{
 				cout<<"Scale Up FAILED! "<<"\n";
 			}
@@ -119,7 +115,29 @@ void Cluster_Autoscaler() {
 }
 
 
+// keep scraping the data from Metrics_Collector() in every 10 seconds and invoke CA
+void Prometheus() {
+	int cnt = 0;
+	while(cnt<2){
+		Metrics_Collector();   // collect data
+		Cluster_Autoscaler();  // send data
+		cout<<"\n\n--------------------------------------------------------------\n\n";
+		for(int j=0;j<10;j++);  // Wait for 10 seconds before next check
+		++cnt;
+	}
+}
+
+void display() {
+    
+	for(itr=NodePool.begin();itr!=NodePool.end();itr++) {
+		cout<<itr->first<<" -> "<<(itr->second).first<<" "<<(itr->second).second<<"\n";
+	}
+}
+
 int main() {
-    Init_NodePool();
-    return 0;
+	Init_NodePool();
+	Prometheus();
+	display();
+	NodePool.clear();
+	return 0;
 }
