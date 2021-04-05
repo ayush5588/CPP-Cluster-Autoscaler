@@ -69,6 +69,16 @@ bool Insert_NewNode() {
 	return true;
 }
 
+// Remove Node from the NodePool 
+bool Remove_Node(string NodeName){
+	if(NodePool.find(NodeName)!=NodePool.end()){
+		NodePool.erase(NodeName);
+		return true;
+	}
+	return false;
+}
+
+
 int main() {
     Init_NodePool();
     return 0;
