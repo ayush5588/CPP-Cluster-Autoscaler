@@ -30,7 +30,7 @@ class WorkerNode {
 		}
 };
 
-// Initialize Node Pool
+// Initialize Node Pool with each node created from the WorkerNode class
 void Init_NodePool() {
 	 // node pool size = 5
 	 while(i < 6){
@@ -44,8 +44,11 @@ void Init_NodePool() {
 	 }
 }
 
+// Generating random traffic on the nodes in the NodePool by assigning nodes random values in the given range
 void Metrics_Collector(){
 	for(itr=NodePool.begin();itr!=NodePool.end();itr++){
+		// generate random CPU usage in range [20,160]
+		// generate random Memory usage in range [80,1638]
 		int curr_cpu_usage = (rand() % (160 + 1 - 20) + 20);
 		int curr_mem_usage = (rand() % (1638 + 1 - 80) + 80);
 		(itr->second).first = curr_cpu_usage;
@@ -54,7 +57,17 @@ void Metrics_Collector(){
 	
 }
 
-
+// Insert New Node in the NodePool
+bool Insert_NewNode() {
+	WorkerNode node;
+	pair<double,double> p = node.get();
+	p.first = (rand() % (160 + 1 - 20) + 20);
+	p.second = (rand() % (1638 + 1 - 80) + 80);
+	string nodeName = "Node_" + to_string(i);
+	NodePool[nodeName] = p;
+	++i;
+	return true;
+}
 
 int main() {
     Init_NodePool();
