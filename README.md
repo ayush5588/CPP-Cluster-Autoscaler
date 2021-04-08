@@ -12,3 +12,10 @@ the number of nodes and the pending pods gets scheduled on the newly created nod
 
 ### ```When Cluster Autoscaler scales down?```
 When the cluster autoscaler sees that certain nodes are underutilized (i.e resources such as CPU, Memory is being utilized lesser than the specified minimum threshold for them) or the current time belongs to the specified downtime of the application, the CA does the pre-removal checks on them. These pre-removal checks involve making sure that the node that has being selected to be removed does not contain pods which have their local storage attached or the pods have PDB (Pod Disruption Budget) defined for them, etc. 
+
+### ```Architecture Diagram```
+#### 1. Metrics Collection
+![image](https://user-images.githubusercontent.com/48388639/114090511-29b33b00-98d5-11eb-8e0e-ead61a5a28bd.png)
+<br />
+#### 2. Metrics Exposing
+![image](https://user-images.githubusercontent.com/48388639/114090716-6a12b900-98d5-11eb-9d4e-e35c8c6bbec7.png)
