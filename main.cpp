@@ -46,7 +46,7 @@ class WorkerNode {
 
 
 // Generating random traffic on the nodes in the NodePool by assigning nodes random values in the given range
-void Metrics_Collector(){
+void Metrics_Aggregator(){
 	// srand((unsigned int)time(0));
 	// Refer https://stackoverflow.com/questions/9459035/why-does-rand-yield-the-same-sequence-of-numbers-on-every-run 
 	for(itr=NodePool.begin();itr!=NodePool.end();itr++){
@@ -125,7 +125,7 @@ void Cluster_Autoscaler() {
 void Prometheus() {
 	int cnt = 0;
 	while(cnt<2){
-		Metrics_Collector();   // collect data
+		Metrics_Aggregator();   // collect data
 		Cluster_Autoscaler();  // send data
 		cout<<"\n\n--------------------------------------------------------------\n\n";
 		for(int j=0;j<10;j++);  // Wait for 10 seconds before next check
