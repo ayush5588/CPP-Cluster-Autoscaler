@@ -49,9 +49,9 @@ class WorkerNode {
 void Metrics_Aggregator(){
 	// srand((unsigned int)time(0));
 	// Refer https://stackoverflow.com/questions/9459035/why-does-rand-yield-the-same-sequence-of-numbers-on-every-run 
+	// generate random CPU usage in range [20,160]
+	// generate random Memory usage in range [80,1638]
 	for(itr=NodePool.begin();itr!=NodePool.end();itr++){
-		// generate random CPU usage in range [20,160]
-		// generate random Memory usage in range [80,1638]
 		int curr_cpu_usage = (rand() % (160 + 1 - 20) + 20);
 		int curr_mem_usage = (rand() % (1638 + 1 - 80) + 80);
 		(itr->second).first = curr_cpu_usage;
